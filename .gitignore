@@ -119,3 +119,6 @@ toy*.py
 .DS_Store
 toy*.py
 post/
+
+# docker
+docker/models
