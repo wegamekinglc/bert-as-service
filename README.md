@@ -121,12 +121,35 @@ Below shows what the server looks like when starting correctly:
 <details>
  <summary>Alternatively, one can start the BERT Service in a Docker Container (click to expand...)</summary>
 
+Firstly you should create a folder named ``models`` under ``docker``:
+
 ```bash
-docker build -t bert-as-service -f ./docker/Dockerfile .
-NUM_WORKER=1
-PATH_MODEL=/PATH_TO/_YOUR_MODEL/
-docker run --runtime nvidia -dit -p 5555:5555 -p 5556:5556 -v $PATH_MODEL:/model -t bert-as-service $NUM_WORKER
+mkdir ./docker/models
 ```
+
+And then you should download the models you needed from [Bert-Models](https://github.com/google-research/bert). Every single model should occuple its own subfolder under ``models``, e.g. :
+
+```bash
+models/
+  |- cased_L-12_H-768_A-12/
+  |- chinese_L-12_H-768_A-12/
+```
+Now you can build the image by execute the following line under project root folder:
+
+```bash
+docker build -t bert-as-service-with-models -f ./docker/Dockerfile .
+```
+
+To run the bert service with docker: 
+
+```bash
+NUM_WORKER=1
+MODEL_NAME=CHOSEN_MODEL_NAME
+docker run --runtime nvidia -dit -p 5555:5555 -p 5556:5556 -t bert-as-service-with-models $NUM_WORKER $MODEL_NAME
+```
+
+Here ``NUM_WORKER`` should be the number of bert works and ``MODEL_NAME`` should be the bert model you want to use.
+
 </details>
 
 
